@@ -13,5 +13,5 @@ export interface SignupRequest extends BaseUser {
 // (회원가입 시 반환되는 데이터)
 export interface LoginResponse {
   accessToken: string;
-  refreshTokens: string;
+  refreshToken: string;
 }

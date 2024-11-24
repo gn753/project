@@ -18,8 +18,12 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = async (data: BaseUser) => {
     try {
-      await getLogin(data); // getLogin 함수 호출
+      const response = await getLogin(data); // getLogin 함수 호출
+      const { accessToken, refreshToken } = response;
 
+      // 로컬 스토리지에 토큰 저장
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       toast({
         title: "로그인 성공",
         description: "대시보드로 이동합니다.",

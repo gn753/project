@@ -4,7 +4,7 @@ import { Button, VStack, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import FormPageInput from "./FormPageInput";
 import { SignupRequest } from "@/types/auth";
-import getSignup from "@/api/getSignup";
+import postSignup from "@/api/getSignup";
 
 const SignUpForm: React.FC = () => {
   const {
@@ -18,7 +18,7 @@ const SignUpForm: React.FC = () => {
 
   const onSubmit = async (data: SignupRequest) => {
     try {
-      await getSignup(data);
+      await postSignup(data);
 
       toast({
         title: "회원가입 성공",

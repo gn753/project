@@ -1,7 +1,7 @@
-import PostListInfinityScroll from "@/components/Post/PostListInfinityScroll";
+import PostListWithPagination from "@/components/Post/PostListWithPagination";
 
 const HomePage = () => {
-  return <PostListInfinityScroll />;
+  return <PostListWithPagination />;
 };
 
 export default HomePage;

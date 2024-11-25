@@ -1,5 +1,5 @@
 import axiosInstance from "@/api/axiosInstance";
-import { PostListResponse } from "./../types/post";
+import { PostListResponse } from "@/types/post";
 
 const getPosts = async (
   page: number,

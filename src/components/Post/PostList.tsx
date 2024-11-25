@@ -1,6 +1,7 @@
 import { List, Center, Spinner, Text } from "@chakra-ui/react";
 import PostListItem from "@/components/Post/PostIListtem";
 import { Post } from "@/types/post";
+import { useNavigate } from "react-router-dom";
 
 interface PostListProps {
   posts: Post[];
@@ -9,11 +10,12 @@ interface PostListProps {
 }
 
 const PostList: React.FC<PostListProps> = ({ posts, isLoading, hasMore }) => {
+
   return (
     <>
       <List spacing={4}>
         {posts.map((post) => (
-          <PostListItem key={post.id} post={post} />
+          <PostListItem key={post.id} post={post}  />
         ))}
       </List>
       {isLoading && hasMore && (

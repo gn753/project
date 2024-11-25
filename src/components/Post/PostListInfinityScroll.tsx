@@ -2,15 +2,18 @@ import { Box, Heading } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { Post, PostListResponse } from "@/types/post";
 import getPosts from "@/api/getPosts";
-import getRefreshToken from "@/api/getRefreshToken";
 import PostList from "@/components/Post/PostList";
 import LoadMoreObserver from "@/components/Post/LoadMoreObserver";
+import Menubar from "@/components/Post/Menubar";
+import getCategories from "@/api/getCategories";
+import HeaderWithButtons from "./HeaderWithButtons";
 
 const PostListInfinityScroll: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]); // 전체 포스트 상태
   const [page, setPage] = useState(0); // 현재 페이지 번호
   const [hasMore, setHasMore] = useState(true); // 더 로드할 데이터가 있는지 여부
-  const [totalPages, setTotalPages] = useState<number | null>(null); // 전체 페이지 수
+  const [totalPages, setTotalPages] = useState<number | null>(null); // 전체
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // 선택된 카테고리
   const isLoadingRef = useRef(false); // 로딩 상태 관리
   const bottomRef = useRef<HTMLDivElement | null>(null); // 하단 감지용 ref
 
@@ -39,18 +42,26 @@ const PostListInfinityScroll: React.FC = () => {
 
   // 페이지 증가 로직
   const loadNextPage = () => setPage((prevPage) => prevPage + 1);
+  const filteredPosts = selectedCategory
+    ? posts.filter((post) => post.category === selectedCategory)
+    : posts;
 
   return (
     <Box maxW="600px" mx="auto" mt="6" p="4">
-      <button onClick={() => getRefreshToken()}>리프레시</button>
+      <HeaderWithButtons />
+      <Menubar
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
       <Heading as="h1" size="lg" mb="6" textAlign="center">
         글 목록
       </Heading>
       <PostList
-        posts={posts}
+        posts={filteredPosts}
         isLoading={isLoadingRef.current}
         hasMore={hasMore}
       />
+
       <LoadMoreObserver
         hasMore={hasMore}
         isLoading={isLoadingRef.current}

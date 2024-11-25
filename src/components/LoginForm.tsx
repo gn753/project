@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { Button, VStack, useToast, Text, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import FormPageInput from "./FormPageInput";
-import getLogin from "@/api/getLogin";
 import handleError from "@/api/handleError";
 import { BaseUser } from "@/types/auth";
+import postLogin from "@/api/postLogin";
 
 const LoginForm: React.FC = () => {
   const {
@@ -18,8 +18,12 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = async (data: BaseUser) => {
     try {
-      await getLogin(data); // getLogin 함수 호출
+      const response = await postLogin(data); // getLogin 함수 호출
+      const { accessToken, refreshToken } = response;
 
+      // 로컬 스토리지에 토큰 저장
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       toast({
         title: "로그인 성공",
         description: "대시보드로 이동합니다.",
@@ -28,7 +32,7 @@ const LoginForm: React.FC = () => {
         isClosable: true,
       });
 
-      navigate("/dashboard"); // 로그인 성공 시 대시보드로 이동
+      navigate("/"); // 로그인 성공 시 대시보드로 이동
     } catch (error) {
       const errorMessage = handleError(error); // handleError 함수 호출
 
@@ -48,7 +52,7 @@ const LoginForm: React.FC = () => {
         <FormPageInput
           label="이메일"
           type="email"
-          placeholder="developer@bigs.or.kr"
+          placeholder="email"
           register={register("username", {
             required: "이메일을 입력해주세요.",
             pattern: {
@@ -71,7 +75,7 @@ const LoginForm: React.FC = () => {
           로그인
         </Button>
         <Text fontSize="sm" textAlign="center" mt="4">
-          계정이 없으신가요?{" "}
+          계정이 없으신가요?
           <Link
             color="blue.500"
             onClick={() => navigate("/signup")} // 회원가입 페이지로 이동
